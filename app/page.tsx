@@ -7,104 +7,25 @@ import { Input } from "@/components/ui/input"
 
 const categories = ["All", "Backpacks", "Totes", "Messenger", "Travel", "Laptop"]
 
-const product = [
-  {
-    id: 1,
-    name: "Urban Explorer Backpack",
-    category: "Backpacks",
-    price: 89.99,
-    image: "/modern-black-backpack.jpg",
-    colors: ["#000000", "#1e3a8a", "#4b5563"],
-    description: "Durable backpack with laptop compartment",
-  },
-  {
-    id: 2,
-    name: "Classic Leather Tote",
-    category: "Totes",
-    price: 129.99,
-    image: "/brown-leather-tote-bag.jpg",
-    colors: ["#8b4513", "#000000", "#d4a574"],
-    description: "Elegant leather tote for everyday use",
-  },
-  {
-    id: 3,
-    name: "Tech Messenger Bag",
-    category: "Messenger",
-    price: 99.99,
-    image: "/grey-messenger-bag.jpg",
-    colors: ["#4b5563", "#000000", "#1e3a8a"],
-    description: "Professional messenger with padded compartments",
-  },
-  {
-    id: 4,
-    name: "Weekend Travel Duffel",
-    category: "Travel",
-    price: 149.99,
-    image: "/navy-travel-duffel-bag.jpg",
-    colors: ["#1e3a8a", "#000000", "#4b5563"],
-    description: "Spacious duffel for weekend getaways",
-  },
-  {
-    id: 5,
-    name: "Minimalist Laptop Bag",
-    category: "Laptop",
-    price: 79.99,
-    image: "/black-minimalist-laptop-bag.jpg",
-    colors: ["#000000", "#4b5563", "#1e3a8a"],
-    description: "Sleek protection for your laptop",
-  },
-  {
-    id: 6,
-    name: "Canvas Tote Shopper",
-    category: "Totes",
-    price: 49.99,
-    image: "/beige-canvas-tote-bag.jpg",
-    colors: ["#d4a574", "#ffffff", "#4b5563"],
-    description: "Eco-friendly canvas shopping tote",
-  },
-  {
-    id: 7,
-    name: "Professional Briefcase",
-    category: "Messenger",
-    price: 179.99,
-    image: "/black-leather-briefcase.jpg",
-    colors: ["#000000", "#8b4513", "#1e3a8a"],
-    description: "Executive briefcase with premium finish",
-  },
-  {
-    id: 8,
-    name: "Outdoor Hiking Pack",
-    category: "Backpacks",
-    price: 119.99,
-    image: "/green-hiking-backpack.jpg",
-    colors: ["#065f46", "#1e3a8a", "#000000"],
-    description: "Rugged pack for outdoor adventures",
-  },
-  {
-    id: 9,
-    name: "Wheeled Carry-On",
-    category: "Travel",
-    price: 199.99,
-    image: "/grey-wheeled-luggage.jpg",
-    colors: ["#4b5563", "#000000", "#1e3a8a"],
-    description: "Convenient wheeled luggage for travel",
-  },
-]
+
 
 interface Product {
-  id: number
+  ProductId: string
   name: string
-  category: string
-  price: number
-  image: string
-  colors: string[]
   description: string
+  price: string
+  stock: number
+  category: string
+  image: string
+  createdAt: string
+  updatedAt: string
 }
+
 
 export default function BagCatalog() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
-  const [wishlist, setWishlist] = useState<number[]>([])
+  const [wishlist, setWishlist] = useState<string[]>([])
   const [products, setProducts] = useState<Product[]>([])
 
   useEffect(() => {
@@ -130,7 +51,7 @@ export default function BagCatalog() {
     return matchesCategory && matchesSearch
   })
 
-  const toggleWishlist = (id: number) => {
+  const toggleWishlist = (id: string) => {
     setWishlist((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]))
   }
 
@@ -201,21 +122,21 @@ export default function BagCatalog() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <div
-              key={product.ProductId}
+              key={product?.ProductId}
               className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow"
             >
               <div className="relative aspect-square overflow-hidden bg-muted">
                 <img
-                  src={product.image || "/placeholder.svg"}
+                  src={product?.image || "/placeholder.svg"}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <button
-                  onClick={() => toggleWishlist(product.id)}
+                  onClick={() => toggleWishlist(product?.ProductId)}
                   className="absolute top-3 right-3 p-2 rounded-full bg-background/80 backdrop-blur hover:bg-background transition-colors"
                 >
                   <Heart
-                    className={`h-5 w-5 ${wishlist.includes(product.id) ? "fill-destructive text-destructive" : "text-muted-foreground"
+                    className={`h-5 w-5 ${wishlist.includes(product?.ProductId) ? "fill-destructive text-destructive" : "text-muted-foreground"
                       }`}
                   />
                 </button>
