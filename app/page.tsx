@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Search, Heart, ShoppingBag, Filter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 const categories = ["All", "Backpacks", "Totes", "Messenger", "Travel", "Laptop"]
 
-const products = [
+const product = [
   {
     id: 1,
     name: "Urban Explorer Backpack",
@@ -91,10 +91,36 @@ const products = [
   },
 ]
 
+interface Product {
+  id: number
+  name: string
+  category: string
+  price: number
+  image: string
+  colors: string[]
+  description: string
+}
+
 export default function BagCatalog() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
   const [wishlist, setWishlist] = useState<number[]>([])
+  const [products, setProducts] = useState<Product[]>([])
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("https://api.newgeebags.com/api/v1/admin/getProducts")
+        const data = await response.json()
+        console.log(data)
+        // Ensure data is an array before setting it, or trust the API (better to handle safely if possible, but keeping it simple for now)
+        setProducts(data)
+      } catch (error) {
+        console.error("Failed to fetch products:", error)
+      }
+    }
+    fetchProducts()
+  }, [])
 
   const filteredProducts = products.filter((product) => {
     const matchesCategory = selectedCategory === "All" || product.category === selectedCategory
@@ -175,7 +201,7 @@ export default function BagCatalog() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <div
-              key={product.id}
+              key={product.ProductId}
               className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow"
             >
               <div className="relative aspect-square overflow-hidden bg-muted">
@@ -189,9 +215,8 @@ export default function BagCatalog() {
                   className="absolute top-3 right-3 p-2 rounded-full bg-background/80 backdrop-blur hover:bg-background transition-colors"
                 >
                   <Heart
-                    className={`h-5 w-5 ${
-                      wishlist.includes(product.id) ? "fill-destructive text-destructive" : "text-muted-foreground"
-                    }`}
+                    className={`h-5 w-5 ${wishlist.includes(product.id) ? "fill-destructive text-destructive" : "text-muted-foreground"
+                      }`}
                   />
                 </button>
               </div>
@@ -206,14 +231,14 @@ export default function BagCatalog() {
 
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2">
-                    {product.colors.map((color, idx) => (
+                    {/* {product.colors.map((color, idx) => (
                       <button
                         key={idx}
                         className="w-6 h-6 rounded-full border-2 border-border hover:border-primary transition-colors"
                         style={{ backgroundColor: color }}
                         aria-label={`Color option ${idx + 1}`}
                       />
-                    ))}
+                    ))} */}
                   </div>
 
                   <Button size="sm">Add to Cart</Button>
