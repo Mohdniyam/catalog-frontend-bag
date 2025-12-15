@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, Heart, ShoppingBag, Filter, Phone, MapPin, Facebook, Instagram, Twitter, MessageCircle } from "lucide-react"
+import { Search, Heart, ShoppingBag, Filter, Phone, MapPin, Facebook, Instagram, Twitter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
