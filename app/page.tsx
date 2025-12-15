@@ -1,9 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, Heart, ShoppingBag, Filter } from "lucide-react"
+import { Search, Heart, ShoppingBag, Filter, Phone, MapPin, Facebook, Instagram, Twitter, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons"
 
 const categories = ["All", "Backpacks", "Totes", "Messenger", "Travel", "Laptop"]
 
@@ -55,6 +57,18 @@ export default function BagCatalog() {
     setWishlist((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]))
   }
 
+  const scrollToContact = () => {
+    const footer = document.querySelector("footer")
+    footer?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const openStoreLocator = () => {
+    window.open(
+      "https://www.google.com/maps/search/?api=1&query=New+Generations+Bag+8771%2F14-B+New+Rohtak+Road+Sidipura+New+Delhi+110005",
+      "_blank",
+    )
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -63,7 +77,7 @@ export default function BagCatalog() {
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <ShoppingBag className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold text-foreground">BagShop</h1>
+              <h1 className="text-2xl font-bold text-foreground">NGBAG</h1>
             </div>
 
             <div className="flex-1 max-w-md">
@@ -79,9 +93,19 @@ export default function BagCatalog() {
               </div>
             </div>
 
-            <Button variant="outline" size="icon">
-              <Heart className="h-5 w-5" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" onClick={scrollToContact} className="flex items-center gap-2">
+                <Phone className="h-4 w-4" />
+                <span className="hidden sm:inline">Contact Us</span>
+              </Button>
+              <Button variant="ghost" onClick={openStoreLocator} className="flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                <span className="hidden sm:inline">Store Locator</span>
+              </Button>
+              <Button variant="outline" size="icon">
+                <Heart className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -145,7 +169,7 @@ export default function BagCatalog() {
               <div className="p-4">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <h3 className="font-semibold text-card-foreground text-lg leading-tight">{product.name}</h3>
-                  <span className="text-lg font-bold text-primary whitespace-nowrap">${product.price}</span>
+                  <span className="text-lg font-bold text-primary whitespace-nowrap">Rs {product.price}</span>
                 </div>
 
                 <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{product.description}</p>
@@ -162,7 +186,8 @@ export default function BagCatalog() {
                     ))} */}
                   </div>
 
-                  <Button size="sm">Add to Cart</Button>
+                  <Button size="sm"> {product.stock > 0 ? "Stock :" + product.stock : "On Order"}</Button>
+
                 </div>
               </div>
             </div>
@@ -177,11 +202,115 @@ export default function BagCatalog() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-muted mt-12 py-8 border-t border-border">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-muted-foreground">© 2025 BagShop. Quality bags for every journey.</p>
+      <footer className="bg-muted mt-12 py-12 border-t border-border">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {/* Contact Information */}
+            <div>
+              <h3 className="font-bold text-foreground text-lg mb-4">Contact Us</h3>
+              <div className="space-y-3">
+                <a
+                  href="tel:9220774381"
+                  className="flex items-start gap-3 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Phone className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                  <span>9220774381</span>
+                </a>
+                <a
+                  href="tel:+917982230815"
+                  className="flex items-start gap-3 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Phone className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                  <span>+91 79822 30815</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Office Address */}
+            <div>
+              <h3 className="font-bold text-foreground text-lg mb-4">Office Address</h3>
+              <div className="flex items-start gap-3 text-muted-foreground mb-4">
+                <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                <address className="not-italic leading-relaxed">
+                  Shop No. 2, 8771/14-B
+                  <br />
+                  Ground Floor, New Rohtak Road
+                  <br />
+                  Near Indian Gas, Sidipura
+                  <br />
+                  New Delhi, Central Delhi
+                  <br />
+                  Delhi - 110005
+                </address>
+              </div>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=New+Generations+Bag+8771%2F14-B+New+Rohtak+Road+Sidipura+New+Delhi+110005"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-primary hover:underline"
+              >
+                <MapPin className="h-4 w-4" />
+                Get Directions
+              </a>
+            </div>
+
+            {/* Social Media */}
+            <div>
+              <h3 className="font-bold text-foreground text-lg mb-4">Follow Us</h3>
+              <div className="flex gap-4">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                  aria-label="Twitter"
+                >
+                  <Twitter className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="pt-8 border-t border-border text-center">
+            <p className="text-muted-foreground">© 2025 NGBAG. Quality bags for every journey.</p>
+          </div>
         </div>
       </footer>
+
+      {/* Floating WhatsApp Button */}
+      <a
+        href="https://wa.me/919220774381?text=Hi%2C%20I%27m%20interested%20in%20your%20bags.%20Can%20you%20help%20me%20with%20product%20details%3F"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:bg-[#20BA5A] hover:scale-110 transition-all duration-300 group"
+        aria-label="Chat on WhatsApp"
+      >
+
+
+        <FontAwesomeIcon icon={faWhatsapp} size="2x" />
+        <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          Chat with us
+        </span>
+      </a>
     </div>
   )
 }

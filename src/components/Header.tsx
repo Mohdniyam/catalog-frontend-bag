@@ -13,7 +13,7 @@ export default function Header({ onSearch }: HeaderProps) {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-12">
             <a href="/" className="text-2xl font-bold tracking-tight">
-              BAGSMITH
+              NGBAG
             </a>
             <nav className="hidden md:flex items-center gap-8">
               <a href="#" className="text-sm font-medium hover:text-muted-foreground transition-colors">
