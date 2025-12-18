@@ -14,17 +14,17 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Shop</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-foreground hover:text-foreground transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   All Products
                 </a>
               </li>
               <li>
-                <a href="#" className="text-foreground hover:text-foreground transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   New Arrivals
                 </a>
               </li>
               <li>
-                <a href="#" className="text-foreground hover:text-foreground transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                   Best Sellers
                 </a>
               </li>

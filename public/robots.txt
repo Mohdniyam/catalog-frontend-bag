@@ -1,0 +1,9 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://catalog.newgeebags.com/sitemap.xml
+
+# Host
+Host: https://catalog.newgeebags.com
