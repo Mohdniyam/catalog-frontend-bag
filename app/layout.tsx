@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
+    google: "7181c4a7e7745e26", //7181c4a7e7745e26
   },
   generator: "v0.app",
   icons: {
