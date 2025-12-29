@@ -169,7 +169,7 @@ export default function BagCatalog() {
               <div className="p-4">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <h3 className="font-semibold text-card-foreground text-lg leading-tight">{product.name}</h3>
-                  <span className="text-lg font-bold text-primary whitespace-nowrap">Rs {product.price}</span>
+                  {/* <span className="text-lg font-bold text-primary whitespace-nowrap">Rs {product.price}</span> */}
                 </div>
 
                 <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{product.description}</p>
