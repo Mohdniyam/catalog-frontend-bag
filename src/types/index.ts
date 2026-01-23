@@ -1,10 +1,11 @@
 export interface Product {
-  id: number
-  name: string
-  description: string
-  price: number
-  category: string
-  image: string
-  colors: string[]
-  isNew?: boolean
+  ProductId: string;
+  name: string;
+  description: string;
+  price: string;
+  stock: number;
+  category: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
 }

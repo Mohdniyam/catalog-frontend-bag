@@ -1,7 +1,18 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
+import type React from "react";
+import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
+import { Open_Sans } from "next/font/google";
+import Header from "@/src/components/Header";
+import Footer from "@/src/components/Footer";
+import { WishlistProvider } from "@/src/context/WishlistContext";
+import { CartProvider } from "@/src/context/CartContext";
+import CartDrawer from "@/src/components/CartDrawer";
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-open-sans",
+});
 
 export const metadata: Metadata = {
   title: "NGBAG - Quality Bags Store in Delhi | Backpacks, Totes & Travel Bags",
@@ -92,12 +103,12 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -117,7 +128,8 @@ export default function RootLayout({
               telephone: ["+919220774381", "+917982230815"],
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Shop No. 2, 8771/14-B, Ground Floor, New Rohtak Road, Near Indian Gas, Sidipura",
+                streetAddress:
+                  "Shop No. 2, 8771/14-B, Ground Floor, New Rohtak Road, Near Indian Gas, Sidipura",
                 addressLocality: "New Delhi",
                 addressRegion: "Delhi",
                 postalCode: "110005",
@@ -131,13 +143,23 @@ export default function RootLayout({
               openingHoursSpecification: [
                 {
                   "@type": "OpeningHoursSpecification",
-                  dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                  dayOfWeek: [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                  ],
                   opens: "10:00",
                   closes: "20:00",
                 },
               ],
               priceRange: "₹₹",
-              sameAs: ["https://instagram.com/ngbag", "https://facebook.com/ngbag"],
+              sameAs: [
+                "https://instagram.com/ngbag",
+                "https://facebook.com/ngbag",
+              ],
             }),
           }}
         />
@@ -151,17 +173,27 @@ export default function RootLayout({
               url: "https://catalog.newgeebags.com",
               potentialAction: {
                 "@type": "SearchAction",
-                target: "https://catalog.newgeebags.com/?search={search_term_string}",
+                target:
+                  "https://catalog.newgeebags.com/?search={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             }),
           }}
         />
       </head>
-      <body className={`font-sans antialiased`}>
-        {children}
+      <body
+        className={`${openSans.className} antialiased min-h-screen flex flex-col`}
+      >
+        <WishlistProvider>
+          <CartProvider>
+            <Header />
+            <CartDrawer />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </CartProvider>
+        </WishlistProvider>
         <Analytics />
       </body>
     </html>
-  )
+  );
 }
