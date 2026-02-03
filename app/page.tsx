@@ -124,7 +124,7 @@ export default function BagCatalog() {
                   {product.description}
                 </p>
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-end">
                   {/* <Button size="sm">
                     {" "}
                     {product.stock > 0 ? "Stock :" + product.stock : "On Order"}

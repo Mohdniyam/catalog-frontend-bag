@@ -43,6 +43,8 @@ export default async function ProductDetailsPage({
     return <div className="p-6">Product not found</div>;
   }
 
+  const thumbnails = Array(5).fill(product.image);
+
   return (
     <section className="">
       <div className="px-4 mt-4">
@@ -53,6 +55,23 @@ export default async function ProductDetailsPage({
       </div>
       <div className="grid md:grid-cols-2 gap-12 container mx-auto px-6 pt-12 pb-18">
         <div className="flex justify-self-end">
+          {/* Thumbnails */}
+          <div>
+            {thumbnails.map((img, index) => (
+              <div
+                key={index}
+                className={`w-20 h-20 bg-white flex items-center justify-center rounded-sm p-0.5 mx-3 ${
+                  index === thumbnails.length - 1 ? "mx-4" : ""
+                }`}
+              >
+                <img
+                  src={img}
+                  alt={product.name}
+                  className="max-w-full max-h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
           <div className="w-96 h-96 bg-white flex items-center justify-center rounded-sm p-0.5 ">
             <img
               src={product.image}
