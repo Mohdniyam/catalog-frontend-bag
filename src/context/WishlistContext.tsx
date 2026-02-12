@@ -5,6 +5,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 interface WishlistContextType {
   wishlist: string[];
   toggleWishlist: (id: string) => void;
+  clearWishlist: () => void;
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(
@@ -20,8 +21,14 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  const clearWishlist = () => {
+    setWishlist([]); // state clear
+  };
+
   return (
-    <WishlistContext.Provider value={{ wishlist, toggleWishlist }}>
+    <WishlistContext.Provider
+      value={{ wishlist, toggleWishlist, clearWishlist }}
+    >
       {children}
     </WishlistContext.Provider>
   );

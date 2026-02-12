@@ -19,12 +19,14 @@ const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { wishlist, toggleWishlist } = useWishlist();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           "https://api.newgeebags.com/api/v1/admin/getProducts",
         );
@@ -34,6 +36,8 @@ const ProductsPage = () => {
         setProducts(data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
@@ -68,73 +72,102 @@ const ProductsPage = () => {
           </div>
         </div>
       </section>
+      <section className="flex justify-center items-center text-lg text-primary bg-[#fcf7f3] pt-6">
+        {products.length} Products
+      </section>
       {/* Products grid */}
       <section className="p-6 bg-[#fcf7f3]">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-          {filteredProducts.map((product) => (
-            <div
-              key={product?.ProductId}
-              className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow"
-            >
-              <div className="relative aspect-square overflow-hidden bg-muted">
-                <Link
-                  key={product.ProductId}
-                  href={`/products/${product.ProductId}`}
-                >
-                  <img
-                    src={product?.image || "/placeholder.svg"}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </Link>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-card rounded-lg border border-border overflow-hidden"
+              >
+                {/* Image skeleton */}
+                <div className="aspect-square bg-muted animate-pulse" />x{" "}
+                {/* Text skeleton */}
+                <div className="p-4 space-y-3">
+                  <div className="flex justify-between">
+                    <div className="h-4 w-24 bg-muted animate-pulse rounded" />
+                    <div className="h-4 w-12 bg-muted animate-pulse rounded" />
+                  </div>
 
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleWishlist(product.ProductId);
-                  }}
-                  className="absolute top-3 right-3 p-2 rounded-full bg-background/80 backdrop-blur hover:bg-background transition-colors"
-                >
-                  <Heart
-                    className={`h-5 w-5 ${
-                      wishlist.includes(product?.ProductId)
-                        ? "fill-destructive text-destructive"
-                        : "text-muted-foreground cursor-pointer"
-                    }`}
-                  />
-                </button>
+                  <div className="space-y-2">
+                    <div className="h-3 w-full bg-muted animate-pulse rounded" />
+                    <div className="h-3 w-3/4 bg-muted animate-pulse rounded" />
+                  </div>
+                </div>
               </div>
-
-              <div className="p-4">
-                <div className="flex items-start justify-between gap-2 mb-2">
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {filteredProducts.map((product) => (
+              <div
+                key={product?.ProductId}
+                className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow"
+              >
+                <div className="relative aspect-square overflow-hidden bg-muted">
                   <Link
                     key={product.ProductId}
                     href={`/products/${product.ProductId}`}
                   >
-                    <h3 className="font-semibold text-card-foreground text-lg leading-tight">
-                      {product.name}
-                    </h3>
+                    <img
+                      src={product?.image || "/placeholder.svg"}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </Link>
-                  <span className="text-lg font-bold text-primary whitespace-nowrap">
-                    Rs {product.price}
-                  </span>
+
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleWishlist(product.ProductId);
+                    }}
+                    className="absolute top-3 right-3 p-2 rounded-full bg-background/80 backdrop-blur hover:bg-background transition-colors"
+                  >
+                    <Heart
+                      className={`h-5 w-5 ${
+                        wishlist.includes(product?.ProductId)
+                          ? "fill-destructive text-destructive"
+                          : "text-muted-foreground cursor-pointer"
+                      }`}
+                    />
+                  </button>
                 </div>
 
-                <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                  {product.description}
-                </p>
+                <div className="p-4">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <Link
+                      key={product.ProductId}
+                      href={`/products/${product.ProductId}`}
+                    >
+                      <h3 className="font-semibold text-card-foreground text-lg leading-tight">
+                        {product.name}
+                      </h3>
+                    </Link>
+                    <span className="text-lg font-bold text-primary whitespace-nowrap">
+                      Rs {product.price}
+                    </span>
+                  </div>
 
-                <div className="flex items-center justify-between">
-                  {/* <Button size="sm">
+                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                    {product.description}
+                  </p>
+
+                  <div className="flex items-center justify-between">
+                    {/* <Button size="sm">
                     {" "}
                     {product.stock > 0 ? "Stock :" + product.stock : "On Order"}
                   </Button> */}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
       {filteredProducts.length === 0 && (
         <section className="container mx-auto p-6">

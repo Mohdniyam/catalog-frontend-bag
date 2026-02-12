@@ -60,14 +60,14 @@ export default async function ProductDetailsPage({
             {thumbnails.map((img, index) => (
               <div
                 key={index}
-                className={`w-20 h-20 bg-white flex items-center justify-center rounded-sm p-0.5 mx-3 ${
-                  index === thumbnails.length - 1 ? "mx-4" : ""
+                className={`w-20 h-20 bg-white flex items-center justify-center rounded-sm p-0.5 mx-3 mb-2 ${
+                  index === thumbnails.length - 1 ? "mx-3" : ""
                 }`}
               >
                 <img
                   src={img}
                   alt={product.name}
-                  className="max-w-full max-h-full object-cover"
+                  className="max-w-full max-h-full object-cover cursor-pointer"
                 />
               </div>
             ))}

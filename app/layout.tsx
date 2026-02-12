@@ -8,6 +8,7 @@ import Footer from "@/src/components/Footer";
 import { WishlistProvider } from "@/src/context/WishlistContext";
 import { CartProvider } from "@/src/context/CartContext";
 import CartDrawer from "@/src/components/CartDrawer";
+import { Toaster } from "sonner";
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -111,7 +112,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="">
       <head>
         <script
           type="application/ld+json"
@@ -189,6 +190,13 @@ export default function RootLayout({
             <Header />
             <CartDrawer />
             <main className="flex-1">{children}</main>
+            <Toaster
+              richColors
+              position="bottom-center"
+              toastOptions={{
+                className: "text-center justify-center",
+              }}
+            />
             <Footer />
           </CartProvider>
         </WishlistProvider>
