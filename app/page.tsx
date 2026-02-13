@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Hero from "@/src/components/Hero";
 import { Heart } from "lucide-react";
@@ -27,7 +27,12 @@ export default function BagCatalog() {
 
   const { wishlist, toggleWishlist } = useWishlist();
 
+  const hasFetched = useRef(false);
+
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
     const fetchProducts = async () => {
       try {
         setLoading(true);
@@ -47,18 +52,24 @@ export default function BagCatalog() {
     fetchProducts();
   }, []);
 
-  console.log(products);
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory =
-      selectedCategory === "All" || product.category === selectedCategory;
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesCategory =
+        selectedCategory === "All" || product.category === selectedCategory;
+
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [products, selectedCategory, searchQuery]);
 
   // ONLY 6 PRODUCTS FOR FEATURED SECTION
-  const featuredProducts = filteredProducts.slice(0, 6);
+  const featuredProducts = useMemo(
+    () => filteredProducts.slice(0, 6),
+    [filteredProducts],
+  );
 
   return (
     <div className="min-h-screen bg-background">
