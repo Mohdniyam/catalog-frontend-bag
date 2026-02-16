@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginForm from "@/src/components/LoginForm";
+import { toast } from "sonner";
 
 type Role = "CUSTOMER" | "SUPPLIER" | "SUPER_ADMIN";
 
@@ -69,6 +70,10 @@ export default function LoginPage() {
         return;
       }
 
+      setTimeout(() => {
+        toast.success("Successfully Logged in!");
+      }, 1000);
+
       //  Save token
       localStorage.setItem("token", data.token);
 
@@ -83,6 +88,8 @@ export default function LoginPage() {
           role: backendRole,
         }),
       );
+
+      window.dispatchEvent(new Event("userLoggedIn"));
 
       //  Redirect based on role
       if (backendRole === "SUPER_ADMIN") {

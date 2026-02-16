@@ -9,9 +9,9 @@ export default function WishlistList({
   toggleWishlist: (id: string) => void;
 }) {
   return (
-    <div className="p-12 mx-2">
+    <div className="mx-auto max-w-7xl px-6 py-8">
       {items.length === 0 ? (
-        <div className="flex gap-2 items-center justify-center text-lg text-primary/60">
+        <div className="min-h-40 flex justify-center items-center text-lg font-medium text-primary/90">
           Your wishlist is empty!
         </div>
       ) : (

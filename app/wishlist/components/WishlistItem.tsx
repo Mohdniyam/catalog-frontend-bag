@@ -10,7 +10,7 @@ export default function WishlistItem({
   toggleWishlist: (id: string) => void;
 }) {
   return (
-    <div className="flex justify-between items-center py-4 border-b first:border-t min-h-35 ">
+    <div className="flex justify-between items-center py-3 border-b first:border-t ">
       <Link
         href={`/products/${item.ProductId}`}
         target="_blank"

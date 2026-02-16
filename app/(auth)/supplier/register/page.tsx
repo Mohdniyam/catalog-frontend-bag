@@ -33,12 +33,13 @@ const FloatingInput = ({
         name={name}
         value={value}
         onChange={onChange}
-        placeholder=" "
-        className="peer w-full border-0 border-b-2 border-gray-300 focus:border-primary focus:outline-none bg-transparent py-3"
+        placeholder={value}
+        className="peer w-full border-0 border-b-2 border-gray-300 focus:border-primary focus:outline-none bg-transparent py-2"
       />
 
       <label
         className="
+        pointer-events-none
        absolute left-0 top-3 text-gray-500
         transition-all duration-200
 
@@ -126,7 +127,7 @@ const SupplierRegisterPage = () => {
       // redirect to login after success
       setTimeout(() => {
         setSuccess("");
-        router.replace("/login");
+        // router.replace("/login");
       }, 2000);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -139,18 +140,16 @@ const SupplierRegisterPage = () => {
     <section className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-black/20 backdrop-blur-sm">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-12 rounded-xl shadow-md w-full max-w-sm"
+        className="bg-white px-12 py-8 rounded-xl shadow-md w-full max-w-sm"
       >
-        <h2 className="text-3xl font-bold text-primary text-center mb-1">
-          Welcome
-        </h2>
-        <p className="text-center text-gray-500 text-sm mb-4">
+        <h2 className="text-3xl font-bold text-center mb-2">Welcome</h2>
+        <p className="text-center text-gray-500 mb-6">
           Register to Become a Supplier
         </p>
 
-        <div>
-          {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-          {success && <p className="text-green-600 text-sm mb-3">{success}</p>}
+        <div className="mb-3">
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {success && <p className="text-green-600 text-sm">{success}</p>}
         </div>
 
         {fields.map((f) => (
@@ -172,7 +171,7 @@ const SupplierRegisterPage = () => {
         </Button>
         <Button
           type="button"
-          className="mt-2 w-full text-black cursor-pointer hover:bg-[#f3f0e9]/60 hover:text-black"
+          className="mt-2 w-full bg-white text-black cursor-pointer hover:bg-[#f3f0e9]/60 hover:text-black"
           variant="outline"
           onClick={handleClick}
         >

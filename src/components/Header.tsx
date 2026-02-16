@@ -15,6 +15,7 @@ import { useWishlist } from "@/src/context/WishlistContext";
 import { useCart } from "@/src/context/CartContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
@@ -37,6 +38,51 @@ export default function Header({ onSearch }: HeaderProps) {
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const [userName, setUserName] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  useEffect(() => {
+    const updateUser = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setIsLoggedIn(false);
+        return;
+      }
+
+      try {
+        const res = await fetch("https://ngtest.newgeebags.com/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error("Not authenticated");
+
+        const data = await res.json();
+        console.log(data);
+
+        setUserName(data.name);
+        setIsLoggedIn(true);
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    };
+
+    updateUser(); // first load
+
+    // for listening login/logout event
+    window.addEventListener("userLoggedIn", updateUser);
+
+    return () => {
+      window.removeEventListener("userLoggedIn", updateUser);
+    };
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -58,20 +104,30 @@ export default function Header({ onSearch }: HeaderProps) {
     // token/loggedInUser data remove
     e.stopPropagation;
     localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("token");
+
+    // Global Event Trigger
+    window.dispatchEvent(new Event("userLoggedIn"));
+
+    setIsLoggedIn(false);
 
     // menu close
     setIsUserMenuOpen(false);
 
     // redirect
     router.push("/login");
-    console.log("LOGOUT BUTTON CLICKED!");
+
+    // toast messege
+    setTimeout(() => {
+      toast.success("Logout successfully!");
+    }, 1000);
   };
 
   /* ------------------ UI ------------------ */
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border text-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex items-center justify-between gap-2 h-16">
           {/* Left */}
           <div className="flex items-center gap-12">
@@ -106,17 +162,20 @@ export default function Header({ onSearch }: HeaderProps) {
 
           {/* Search */}
           <div className="relative hidden sm:flex flex-1 justify-center max-w-xl">
-            <Search className="absolute lg:left-16 xl:left-26 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Search
+              className="absolute lg:left-16 xl:left-25 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/80"
+              strokeWidth="1.5px"
+            />
             <input
               type="text"
-              placeholder="   Search for Bags"
+              placeholder="Search for Bags"
               onChange={(e) => onSearch?.(e.target.value)}
-              className="w-2/3 pl-10 pr-4 py-2 border rounded-lg outline-none ring-1 ring-primary border-primary"
+              className="w-2/3 pl-12  pr-4 py-2 border rounded-xl outline-none ring-1 ring-primary border-primary"
             />
           </div>
 
           {/* Right */}
-          <div className="flex items-center ml-auto gap-4">
+          <div className="flex items-center ml-auto gap-2 md:gap-4">
             {/* Store Locator */}
             <div className="p-2">
               <div
@@ -131,7 +190,13 @@ export default function Header({ onSearch }: HeaderProps) {
             {/* Login */}
             <div
               className="relative flex items-center py-2 rounded-md cursor-pointer"
-              onClick={() => router.push("/login")}
+              onClick={() => {
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                  router.push("/login");
+                }
+              }}
               onMouseEnter={() => setIsUserMenuOpen(true)}
               onMouseLeave={() => setIsUserMenuOpen(false)}
               ref={userMenuRef}
@@ -144,7 +209,8 @@ export default function Header({ onSearch }: HeaderProps) {
               </button>
 
               <div className="flex gap-1 items-center pr-2">
-                <div className="text-sm">Login</div>
+                <div className="text-sm">{userName ? userName : "Login"}</div>
+
                 <ChevronDown
                   className={`h-4 w-4 transition-all duration-300 ${
                     isUserMenuOpen ? "rotate-180 scale-110" : ""

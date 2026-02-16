@@ -61,7 +61,10 @@ export default function CartDrawer() {
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-3">
           <h2 className="text-lg font-semibold text-primary">Cart</h2>
-          <button onClick={closeCart} className="cursor-pointer">
+          <button
+            onClick={closeCart}
+            className="hover:text-primary hover:scale-110 duration-200 cursor-pointer"
+          >
             <X />
           </button>
         </div>

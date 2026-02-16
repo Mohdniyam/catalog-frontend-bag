@@ -16,7 +16,7 @@ export default function WishlistClient({ products }: { products: Product[] }) {
   );
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[calc(100vh-64px)] bg-background px-6 py-8">
       <WishlistHeader
         count={wishlistProducts.length}
         onClear={() => setShowConfirm(true)}

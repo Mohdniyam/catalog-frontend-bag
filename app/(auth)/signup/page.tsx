@@ -74,7 +74,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="mh-full">
+    <div className="min-h-screen">
       <SignupForm onSubmit={handleSignup} loading={loading} error={error} />
     </div>
   );
